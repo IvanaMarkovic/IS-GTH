@@ -1,0 +1,230 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GlobalThinkersHelper"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf" x:Class="GlobalThinkersHelper.CreateReservation"
+             xmlns:validation="clr-namespace:GlobalThinkersHelper.Validation"
+             xmlns:view="clr-namespace:GlobalThinkersHelper.View"
+             xmlns:entity="clr-namespace:GlobalThinkersHelper.Model.Entities"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="700"  d:DesignWidth="1000">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid HorizontalAlignment="Stretch" x:Name="mainContainer">
+
+            <Grid.Resources>
+                <entity:reservation x:Key="reservation"></entity:reservation>
+                <entity:item_list x:Key="item_list"/>
+                <entity:term x:Key="term"/>
+            </Grid.Resources>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.45*"/>
+                <ColumnDefinition Width="0.45*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="150 0 0 0 " >
+                <TextBlock x:Name="tbTitle" Foreground="#FF4BB050" Text="Kreiranje rezervacije"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-50 20 0 0" FontSize="18" FontWeight="Bold"/>
+                <Grid x:Name="gridReservation" Margin="0,77,0,0" Background="#FFFAFAFA" Width="850" VerticalAlignment="Top" HorizontalAlignment="Left" Height="123">
+
+                    <syncfusion:SfTextBoxExt x:Name="atbClientSearch" Margin="0,46,0,0" Background="#FFFAFAFA"  Text="{Binding Path=Text, ElementName=tbClientSearch,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="164" Height="16" BorderBrush="#FF4BB050" BorderThickness="0" Foreground="Transparent" Focusable="False" AutoCompleteMode="Suggest" SuggestionMode="Contains" KeyDown="atbClientSearch_KeyDown" SelectedItemChanged="atbClientSearch_SelectedItemChanged" />
+                    <TextBox x:Name="tbClientSearch" Margin="0,26,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="164"  materialDesign:HintAssist.Hint="Ime klijenta*" materialDesign:HintAssist.HelperText="Unesite ime klijenta" Style="{StaticResource MaterialDesignFloatingHintTextBox}" TextChanged="tbClientSearch_GotFocus">
+                    </TextBox>
+
+                    <syncfusion:SfTextBoxExt x:Name="atbEventSearch" Margin="245,46,0,0" Background="#FFFAFAFA"  HorizontalAlignment="Left" VerticalAlignment="Top"  Width="164" Height="16" BorderBrush="#FF4BB050" BorderThickness="0" Foreground="Transparent" Focusable="False" AutoCompleteMode="Suggest" SuggestionMode="Contains" KeyDown="atbEventSearch_KeyDown" SelectedItemChanged="atbEventSearch_SelectedItemChanged"  />
+                    <TextBox x:Name="tbEventSearch" Margin="245,26,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="164"  materialDesign:HintAssist.Hint="Događaj" materialDesign:HintAssist.HelperText="Unesite naziv događaja" Style="{StaticResource MaterialDesignFloatingHintTextBox}" TextChanged="tbEventSearch_GotFocus" >
+                        <TextBox.Text>
+                            <Binding Path="Text" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" ElementName="atbEventSearch">
+                                <Binding.ValidationRules>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <Image Focusable="false" Height="18" Width="18"  HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="391,42,0,0" Source="pack://application:,,,/Resources/add.png" PreviewMouseDown="Show_Create_Event_Dialog"/>
+                    <TextBox DataContext="{StaticResource reservation}" x:Name="tbEventPrice" GotFocus="tbEventPrice_GotFocus" Padding="0,0,7,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Width="164" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="490,26,0,0" Height="37" >
+                        <TextBox.Text>
+                            <Binding Path="event_price" UpdateSourceTrigger="PropertyChanged" TargetNullValue="{x:Static sys:String.Empty}" StringFormat="N2">
+                                <Binding.ValidationRules>
+                                    <validation:NumberValidation/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        <materialDesign:HintAssist.Hint>Cijena događaja</materialDesign:HintAssist.Hint>
+                        <materialDesign:HintAssist.HelperText>Unesite cijenu dogadjaja</materialDesign:HintAssist.HelperText>
+                    </TextBox>
+                </Grid>
+            </Grid>
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="150, 0 0 0" Width="850" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <materialDesign:Card Margin="0,20,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+                    <Expander x:Name="expander"  Header="Dodavanje termina" Background="#FFFAFAFA" Width="850"  Foreground="#DD565252">
+                        <Grid Background="#FFFAFAFA"  Margin="0">
+                            <syncfusion:SfTextBoxExt x:Name="atbHallSearch" Margin="30,48,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="164" Height="16" BorderBrush="#FF4BB050" BorderThickness="0" Foreground="Transparent" Focusable="False"  AutoCompleteMode="Suggest" SuggestionMode="Contains" KeyDown="atbHallSearch_KeyDown" SelectedItemChanged="atbHallSearch_SelectedItemChanged" Background="#FFFAFAFA" />
+                            <TextBox x:Name="tbHallSearch" Margin="30,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="164"  materialDesign:HintAssist.Hint="Sala*" materialDesign:HintAssist.HelperText="Unesite naziv sale" Style="{StaticResource MaterialDesignFloatingHintTextBox}" TextChanged="tbHallSearch_GotFocus" Text="{Binding Path=Text, ElementName=atbHallSearch, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="40"/>
+
+                            <TextBox FocusManager.FocusedElement="{Binding ElementName=calendar}" x:Name="txtCalendar" GotFocus="txtCalendar_GotFocus"  Text="Odaberite datum" IsReadOnly="True" HorizontalAlignment="Left" PreviewMouseDown="txtCalendar_MouseDown" Height="23" Margin="30,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="164" BorderThickness="0 0 0 0.5" Foreground="#FF616161" Background="Transparent" Panel.ZIndex="1" />
+                            <materialDesign:PackIcon  x:Name="ImgCalendar" Height="17" Width="17" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="177,132,0,0" Kind="Calendar" Foreground="#FF4BB050" Visibility="Visible" RenderTransformOrigin="2.165,0.306" ></materialDesign:PackIcon>
+
+                            <Calendar x:Name="calendar" HorizontalAlignment="Left" Margin="30,149,0,0" VerticalAlignment="Top" SelectionMode="MultipleRange" BorderBrush="Green" Background="#FFFAFAFA" 
+                  BorderThickness="0 1 0 0" Visibility="Collapsed" KeyDown="calendar_KeyDown" SelectedDatesChanged="calendar_SelectedDateChanged" Panel.ZIndex="1"/>
+                            <materialDesign:TimePicker x:Name="tpTimeFrom" materialDesign:HintAssist.Hint="Vrijeme od" materialDesign:HintAssist.HelperText="Unesite vrijeme početka" Style="{StaticResource MaterialDesignFloatingHintTimePicker}" Margin="246,111,0,0" HorizontalAlignment="Left" Width="164" Height="40" Is24Hours="True" Panel.ZIndex="1" VerticalAlignment="Top" SelectedTimeChanged="ClearErrors">
+                                <materialDesign:TimePicker.Text>
+                                    <Binding Path="rent_time_start" UpdateSourceTrigger="Explicit">
+                                        <Binding.ValidationRules>
+                                            <validation:TimeValidationRule2 />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </materialDesign:TimePicker.Text>
+                            </materialDesign:TimePicker>
+
+                            <materialDesign:TimePicker x:Name="tpTimeUntil" materialDesign:HintAssist.Hint="Vrijeme do" materialDesign:HintAssist.HelperText="Unesite vrijeme kraja" Style="{StaticResource MaterialDesignFloatingHintTimePicker}" Margin="460,111,0,0" HorizontalAlignment="Left" Width="164" Height="40" Is24Hours="True" GotFocus="TpTimeUntil_GotFocus" Panel.ZIndex="1" VerticalAlignment="Top" SelectedTimeChanged="ClearErrors">
+                                <materialDesign:TimePicker.Text>
+                                    <Binding Path="rent_time_end" UpdateSourceTrigger="Explicit">
+                                        <Binding.ValidationRules>
+                                            <validation:TimeValidationRule2 />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </materialDesign:TimePicker.Text>
+                            </materialDesign:TimePicker>
+                            <!--<TextBox  HorizontalAlignment="Left" Margin="355,213,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="61" Width="111" BorderThickness="1"/>-->
+
+                            <Label x:Name="note" Content="Napomena" HorizontalAlignment="Left" Margin="30,179,0,0" VerticalAlignment="Top" Height="29" Foreground="#DD909090"/>
+                            <TextBox x:Name="notes" HorizontalAlignment="Left" BorderThickness="1" Height="87" Margin="30,213,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="427" BorderBrush="#89909090" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
+
+                            <syncfusion:SfTextBoxExt x:Name="atbItemSearch" Margin="30,351,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="164" Height="16"  BorderBrush="#FF4BB050" BorderThickness="0" Foreground="Transparent" Focusable="False" AutoCompleteMode="Suggest" SuggestionMode="Contains" KeyDown="atbItemSearch_KeyDown" SelectedItemChanged="atbItemSearch_SelectedItemChanged" Background="#FFFAFAFA" />
+                            <TextBox x:Name="tbItemSearch" Margin="30,330,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="164"  materialDesign:HintAssist.Hint="Pretraga stavki" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.HelperText="Unesite naziv stavke" TextChanged="tbItemSearch_GotFocus" Text="{Binding Path=Text, ElementName=atbItemSearch, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Height="40"/>
+                            <Image Focusable="false" Height="20" Width="20"  HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="175,349,0,0" Source="pack://application:,,,/Resources/add.png" MouseLeftButtonUp="Show_Create_Item_Dialog"/>
+                            <TextBox x:Name="tbItemCount" DataContext="{StaticResource item_list}" Width="164" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFloatingHintTextBox}"  Margin="246,330,0,0">
+                                <TextBox.Text>
+                                    <Binding Path="quantity" UpdateSourceTrigger="Explicit" TargetNullValue="{x:Static sys:String.Empty}">
+                                        <Binding.ValidationRules>
+                                            <validation:NumberValidation2/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                                <materialDesign:HintAssist.Hint>Broj stavki</materialDesign:HintAssist.Hint>
+                                <materialDesign:HintAssist.HelperText>Unesite broj stavki</materialDesign:HintAssist.HelperText>
+                            </TextBox>
+
+                            <Button x:Name="addItem" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="460,348,0,0" Width="120" Height="26" RenderTransformOrigin="0.552,1.4" Foreground="#DDFFFFFF" Click="Add_Item_Click" >Dodaj stavku</Button>
+
+                            <StackPanel  Margin="30,426,0,0">
+                                <DataGrid DataContext="{StaticResource item_list}" VerticalAlignment="Top" MinRowHeight="40"  Style="{StaticResource MaterialDesignDataGrid}" IsReadOnly="True" x:Name="itemDatagrid" AutoGenerateColumns="False" MaxHeight="280" Height="auto" MinHeight="100" HorizontalAlignment="Left" Width="690" SelectionChanged="datagrid_SelectionChanged" >
+                                    <DataGrid.Columns>
+                                        <materialDesign:DataGridTextColumn Header="Naziv stavke" Width="0.20*" Binding="{Binding item.name}" >
+                                        </materialDesign:DataGridTextColumn>
+                                        <DataGridTextColumn Header="Cijena" Width="0.20*" Binding="{Binding item.price}" ></DataGridTextColumn>
+                                        <DataGridTextColumn Header="Kolicina" Width="0.20*" Binding="{Binding quantity}" ></DataGridTextColumn>
+                                        <DataGridTextColumn Width="0.20*"/>
+                                        <DataGridTemplateColumn Width="100" MinWidth="100">
+                                            <DataGridTemplateColumn.CellTemplate >
+                                                <DataTemplate>
+                                                    <Button x:Name="btnUpdateItem" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="Transparent" Visibility="Visible" BorderThickness="0" Click="btnUpdateItem_Click">
+                                                        <materialDesign:PackIcon VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF4BB050" Kind="Edit" Height="20" Width="20"></materialDesign:PackIcon>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="100" MinWidth="100">
+                                            <DataGridTemplateColumn.CellTemplate >
+                                                <DataTemplate>
+                                                    <Button x:Name="btnDeleteItem" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="Transparent" Visibility="Visible" BorderThickness="0" Click="btnDeleteItem_Click">
+                                                        <materialDesign:PackIcon VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red"  Kind="Delete" Height="20" Width="20"></materialDesign:PackIcon>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <Button x:Name="addTerm" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,35,0,0" Width="120" Height="26" RenderTransformOrigin="0.552,1.4" Foreground="#DDFFFFFF" Click="Add_Term_Click" >Dodaj Termin</Button>
+                            </StackPanel>
+                        </Grid>
+                    </Expander>
+                </materialDesign:Card>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Termini" HorizontalAlignment="Left" Margin="0,20,0,0" FontSize="16" VerticalAlignment="Top" Foreground="#DD4BB050"/>
+                    <Label x:Name="lbTermError" Visibility="Hidden" Content="Termini označeni u tabeli ispod se ne mogu rezervisati!" HorizontalAlignment="Left" Margin="50,20,0,0" FontSize="16" VerticalAlignment="Top" Foreground="Red"/>
+                </StackPanel>
+                <DataGrid DataContext="{StaticResource term}"  VerticalAlignment="Top" MinRowHeight="40" Style="{StaticResource MaterialDesignDataGrid}" IsReadOnly="True" x:Name="termDatagrid" AutoGenerateColumns="False" MaxHeight="280" MinHeight="100" HorizontalAlignment="Left" Margin="0,20,0,0" Width="Auto" SelectionChanged="datagrid_SelectionChanged" MinWidth="700" >
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Header="Zauzet" Width="100" Binding="{Binding status}"/>
+                        <DataGridTextColumn Header="Sala" Width="0.20*" Binding="{Binding hall.name}"/>
+                        <DataGridTextColumn Header="Datum" Width="0.15*" Binding="{Binding rental_date, StringFormat=dd.MM.yyyy}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Vrijeme početka" Width="0.20*" Binding="{Binding rent_time_start}" ></DataGridTextColumn>
+                        <DataGridTextColumn Header="Vrijeme kraja" Width="0.20*" Binding="{Binding rent_time_end}"></DataGridTextColumn>
+                        <DataGridTextColumn Width="0.20*"/>
+                        <DataGridTemplateColumn Width="80" >
+                            <DataGridTemplateColumn.CellTemplate >
+                                <DataTemplate>
+                                    <Button x:Name="btnUpdateTerm" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="Transparent" Visibility="Visible" BorderThickness="0" Click="btnUpdateTerm_Click">
+                                        <materialDesign:PackIcon VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF4BB050" Kind="Edit" Height="20" Width="20"></materialDesign:PackIcon>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn  Width="80">
+                            <DataGridTemplateColumn.CellTemplate >
+                                <DataTemplate>
+                                    <Button x:Name="btnDeleteTerm" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="Transparent" Visibility="Visible" BorderThickness="0" Click="btnDeleteTerm_Click">
+                                        <materialDesign:PackIcon VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red"  Kind="Delete" Height="20" Width="20"></materialDesign:PackIcon>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Label x:Name="lbReservationError" Visibility="Collapsed" Content="Rezervaciju ne možete izvršiti za pojedine termine!" HorizontalAlignment="Left" Margin="0,20,0,0" FontSize="16" VerticalAlignment="Top" Foreground="Red"/>
+                <StackPanel Height="27" Margin="0,20,20,0" Orientation="Horizontal">
+                    <Button x:Name="confirm" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" Width="100" Height="26" RenderTransformOrigin="0.552,1.4" Foreground="#DDFFFFFF" Click="Confirm_Click" Content="Potvrdi" />
+                    <Button x:Name="cancelButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="26" RenderTransformOrigin="0.552,1.4" Background="#FFE43F33" BorderBrush="#FF909090" Foreground="#DDFFFFFF" Content="Odustani" Margin="40,0,0,0" Click="CancelButton_Click" />
+                </StackPanel>
+            </StackPanel>
+            <materialDesign:DialogHost Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="eventPopup" Background="#FF590F0F">
+                <materialDesign:DialogHost.DialogContent>
+                    <StackPanel Background="White" Width="300" Height="300">
+                        <Label x:Name="lbDialog" Content="Kreiranje događaja" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15 30 0 0"></Label>
+                        <TextBox x:Name="tbName" DataContext="{StaticResource reservation}" materialDesign:HintAssist.Hint="Naziv" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="25 30 0 0" Width="250">
+                            <TextBox.Text>
+                                <Binding Path="Text" UpdateSourceTrigger="Explicit">
+                                    <Binding.ValidationRules>
+                                        <validation:NotEmpty/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBox x:Name="tbPrice" materialDesign:HintAssist.Hint="Cijena" materialDesign:HintAssist.IsFloating="True" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="25 27 0 0" Width="250">
+                            <TextBox.Text>
+                                <Binding Path="price" UpdateSourceTrigger="Explicit" TargetNullValue="{x:Static sys:String.Empty}">
+                                    <Binding.ValidationRules>
+                                        <validation:NumberValidation></validation:NumberValidation>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="27 30 0 0">
+                            <Button x:Name="btnAccept"  IsDefault="True"
+                            Margin="0 8 8 0" Foreground="White" Width="120" Click="btnAccept_Click">
+                                Potvrdi
+                            </Button>
+                            <Button x:Name="btnCancel"  IsCancel="True"
+                            Margin="0 8 8 0"
+                            Command="materialDesign:DialogHost.CloseDialogCommand" Background="Red" BorderBrush="Red" Foreground="White" Width="120" Click="btnCancel_Click">
+                                Odustani
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </materialDesign:DialogHost.DialogContent>
+            </materialDesign:DialogHost>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

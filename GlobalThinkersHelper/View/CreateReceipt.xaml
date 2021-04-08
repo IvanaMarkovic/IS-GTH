@@ -1,0 +1,270 @@
+﻿<UserControl x:Class="GlobalThinkersHelper.View.CreateReceipt"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GlobalThinkersHelper.View"
+             mc:Ignorable="d"
+             xmlns:validation="clr-namespace:GlobalThinkersHelper.Validation"
+             xmlns:entity="clr-namespace:GlobalThinkersHelper.Model.Entities"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xml:lang="sr-Latn-RS"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             xmlns:syncfusion="http://schemas.syncfusion.com/wpf" d:DesignHeight="700"  d:DesignWidth="1000">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" BorderThickness="0" CanContentScroll="True">
+        <Grid>
+            <Grid.Resources>
+                <entity:reservation x:Key="reservation" />
+                <entity:receipt x:Key="reciept"/>
+            </Grid.Resources>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" VerticalAlignment="Top" >
+                <TextBlock  Foreground="#FF4BB050" Text="Kreiranje računa"  VerticalAlignment="Top"  Margin="100 20 0 0" FontSize="18" FontWeight="Bold" />
+            </Grid>
+           
+            <StackPanel Grid.Row="1" Margin="150 20 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="850">
+                <StackPanel Grid.Row="1" VerticalAlignment="Top">
+                    <materialDesign:Card Margin="0,20,0,0">
+                        <Expander x:Name="clientExpander" Header="Izbor rezervacije" IsExpanded="True"  Foreground="#DD565252">
+                            <StackPanel>
+                                <Grid>
+                                    <syncfusion:SfTextBoxExt x:Name="atbClientSearch" Margin="30,46,0,0" Text="{Binding Path=Text, ElementName=tbClientSearch,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Top"  Width="164" Height="16" BorderBrush="#FF4BB050" BorderThickness="0" Foreground="Transparent" Background="#FFFAFAFA" Focusable="False" AutoCompleteMode="Suggest" SuggestionMode="Contains" KeyDown="atbClientSearch_KeyDown" SelectedItemChanged="atbClientSearch_SelectedItemChanged" />
+                                    <TextBox DataContext="{StaticResource reservation}" x:Name="tbClientSearch" Margin="30,26,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="164"  materialDesign:HintAssist.Hint="Ime klijenta*" materialDesign:HintAssist.HelperText="Unesite ime klijenta" Style="{StaticResource MaterialDesignFloatingHintTextBox}" TextChanged="tbClientSearch_GotFocus">
+                                        <TextBox.Text>
+                                            <Binding Path="client" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" ElementName="atbClientSearch" >
+                                                <Binding.ValidationRules>
+                                                    <validation:ClientValidation/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+
+                                </Grid>
+                                <DataGrid DataContext="{StaticResource reservation}" SelectionMode="Single" SelectedItem="{x:Null}" x:Name="datagridReservation" VerticalAlignment="Top" MinRowHeight="40" Style="{StaticResource MaterialDesignDataGrid}" IsReadOnly="True" AutoGenerateColumns="False" MaxHeight="280" MinHeight="100" Height="auto" HorizontalAlignment="Left" Margin="20,40,0,20" Width="496" SelectionChanged="datagrid_SelectionChanged" MinWidth="250" >
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Događaj" Width="0.15*" Binding="{Binding _event.name}"></DataGridTextColumn>
+                                        <DataGridTextColumn Header="Datum" Width="0.15*" Binding="{Binding terms}" ></DataGridTextColumn>
+                                        <DataGridTextColumn Header="Broj računa" Width="0.15*" Binding="{Binding receipts.Count}"></DataGridTextColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Expander>
+                    </materialDesign:Card>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" VerticalAlignment="Top">
+                    <materialDesign:Card Margin="0,20,0,0" Background="WhiteSmoke">
+                        <Expander x:Name="receiptExpander" Margin="0" Header="Pregled računa"  Foreground="#DD565252" ScrollViewer.CanContentScroll="True">
+                            <StackPanel>
+                                <Grid Margin=" 0 0 0 50">
+                                    <TextBlock x:Name="tbReceiptNumberLabel"  Foreground="#FF4BB050" Text="Broj računa"  VerticalAlignment="Top"  Margin="50,50,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                                    <TextBlock x:Name="tbClientLabel"  Foreground="#FF4BB050" Text="Klijent"  VerticalAlignment="Top"  Margin="50,100,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                                    <TextBlock x:Name="tbEventNameLabel"  Foreground="#FF4BB050" Text="Naziv događaja"  VerticalAlignment="Top"  Margin="50,150,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                                    <TextBlock x:Name="tbTotalAmountLabel"  Foreground="#FF4BB050" Text="Ukupan iznos"  VerticalAlignment="Top"  Margin="50,200,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+
+                                    <TextBlock x:Name="tbReceiptNumber" VerticalAlignment="Top"  Margin="230,50,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                                    <TextBlock x:Name="tbClientName"  Text="{Binding Path=client.first_name}"  DataContext="{StaticResource reservation}" VerticalAlignment="Top"  Margin="230,100,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                                    <TextBlock x:Name="tbEventName"  Text="{Binding Path=_event.name}" DataContext="{StaticResource reservation}" VerticalAlignment="Top"  Margin="230,150,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                                    <TextBlock x:Name="tbPrice" VerticalAlignment="Top"  Margin="230,200,0,0" FontSize="16" HorizontalAlignment="Left"/>
+
+                                    <TextBlock x:Name="tbDateLabel"  Foreground="#FF4BB050" Text="Datum izdavanja"  VerticalAlignment="Top"  Margin="0,50,50,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Right"/>
+                                    <TextBlock x:Name="tbCurrentDate" Text="{Binding Source={x:Static sys:DateTime.Now}, StringFormat=dd/MM/yyyy}" VerticalAlignment="Top"  Margin="0,100,50,0" FontSize="16" HorizontalAlignment="Right"/>
+                                    <StackPanel x:Name="spTerms" Visibility="Collapsed" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,250,0,0" Width="750">
+                                        <TextBlock x:Name="tbTermsLabel"  Foreground="#FF4BB050" Text="Podaci o terminima odabrane rezervacije"  VerticalAlignment="Center" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left" Margin="50,0,0,0"/>
+                                        <TreeView x:Name="tvTerms" Height="auto" Margin="100,20,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                                
+                                <Separator Margin="50,0,50,0" Width="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                                <StackPanel Height="39" Margin="50,50,50,0" Orientation="Horizontal">
+                                    <TextBlock x:Name="tbInstallmentsLabel"  Foreground="#FF4BB050" Text="Plaćanje u ratama"  VerticalAlignment="Center" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                                    <ToggleButton x:Name="tbInstallmentsButton" Margin="50,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Click="TbInstallmentsButton_Click" />
+                                </StackPanel>
+                                <StackPanel Height="65" Margin="50,0" Orientation="Horizontal">
+                                    <TextBlock  Foreground="#FF4BB050" Text="Broj rata"  VerticalAlignment="Center" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left" Margin="0,32,0,13"/>
+                                    <TextBox x:Name="tbInstallmentsCount" Width="164" Height="40" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"  Margin="119,12,0,13" IsEnabled="False">
+                                        <TextBox.Text>
+                                            <Binding Path="Text" UpdateSourceTrigger="Explicit" TargetNullValue="{x:Static sys:String.Empty}">
+                                                <Binding.ValidationRules>
+                                                    <validation:NumberValidation2/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                        <materialDesign:HintAssist.Hint>Broj rata</materialDesign:HintAssist.Hint>
+                                        <materialDesign:HintAssist.HelperText>Unesite broj rata</materialDesign:HintAssist.HelperText>
+                                    </TextBox>
+                                </StackPanel>
+
+                                <StackPanel Height="65" Margin="50,0,50,40" Orientation="Horizontal">
+                                    <TextBlock  Foreground="#FF4BB050" Text="Popust"  VerticalAlignment="Center" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left" Margin="0,32,0,13"/>
+                                    <TextBox x:Name="tbDiscountAmount" Width="164" Height="40" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource MaterialDesignFloatingHintTextBox}"  Margin="130,12,0,13">
+                                        <TextBox.Text>
+                                            <Binding Path="Text" UpdateSourceTrigger="Explicit" TargetNullValue="{x:Static sys:String.Empty}">
+                                                <Binding.ValidationRules>
+                                                    <validation:NumberValidation2/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                        <materialDesign:HintAssist.Hint>Popust</materialDesign:HintAssist.Hint>
+                                        <materialDesign:HintAssist.HelperText>Unesite iznos popusta</materialDesign:HintAssist.HelperText>
+                                    </TextBox>
+                                    <ComboBox x:Name="cbDiscount" VerticalAlignment="Center" Margin="30,11,0,0">
+                                        <ComboBoxItem IsSelected="True">%</ComboBoxItem>
+                                        <ComboBoxItem>€</ComboBoxItem>
+                                    </ComboBox>
+                                </StackPanel>
+                                <Button x:Name="btnPayingPlan" Content="Potvrdi" Margin="230, 0, 0, 50" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" Foreground="White" Click="btnPayingPlan_Click"></Button>
+                                <StackPanel x:Name="spPaymentPlan" Visibility="Collapsed" Orientation="Vertical" Margin="50,0,50,40">
+                                    <TextBlock Foreground="#FF4BB050" Text="Plan otplate"  VerticalAlignment="Center" FontSize="18" FontWeight="Medium" HorizontalAlignment="Left"/>
+
+                                    <DataGrid x:Name="datagridReceipts" SelectionMode="Single" DataContext="{StaticResource reciept}"  VerticalAlignment="Top" MinRowHeight="40" Style="{StaticResource MaterialDesignDataGrid}" IsReadOnly="True" AutoGenerateColumns="False" Height="300" HorizontalAlignment="Left" Margin="0,30,0,0" Width="Auto" MinWidth="700" VerticalContentAlignment="Stretch" >
+                                        <DataGrid.Columns>
+                                            <DataGridCheckBoxColumn Header="Plaćen" Width="0.05*" Binding="{Binding paid}"></DataGridCheckBoxColumn>
+                                            <DataGridTextColumn Header="Broj računa" Width="0.10*" Binding="{Binding serial_number}"></DataGridTextColumn>
+                                            <DataGridTextColumn Header="Datum uplate" Width="0.10*" Binding="{Binding payment_date, StringFormat=dd.MM.yyyy}"></DataGridTextColumn>
+                                            <DataGridTextColumn Header="Iznos bez popusta" Width="0.10*" Binding="{Binding amount, StringFormat=N2}"></DataGridTextColumn>
+                                            <DataGridTextColumn Header="Popust u €" Width="0.10*" Binding="{Binding discount, StringFormat=N2}"/>
+                                            <DataGridTemplateColumn Width="80">
+                                                <DataGridTemplateColumn.CellTemplate >
+                                                    <DataTemplate>
+                                                        <Button x:Name="btnUpdateInstallment" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="Transparent" Visibility="Visible" BorderThickness="0" Click="btnUpdateInstallment_Click">
+                                                            <materialDesign:PackIcon VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF4BB050" Kind="Receipt" Height="20" Width="20"></materialDesign:PackIcon>
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Width="80">
+                                                <DataGridTemplateColumn.CellTemplate >
+                                                    <DataTemplate>
+                                                        <Button x:Name="btnSaveReciept" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="Transparent" Visibility="Visible" BorderThickness="0" Click="btnSaveReciept_Click">
+                                                            <materialDesign:PackIcon VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF4BB050" Kind="ContentSave" Height="20" Width="20"></materialDesign:PackIcon>
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </StackPanel>
+                        </Expander>
+
+                    </materialDesign:Card>
+
+                    <StackPanel Orientation="Horizontal" Margin="50,40" VerticalAlignment="Top">
+                        <Button x:Name="confirm" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" Width="100" Height="26" RenderTransformOrigin="0.552,1.4" Foreground="#DDFFFFFF" Click="Confirm_Click" Content="Potvrdi" />
+                        <Button x:Name="cancelButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="26" RenderTransformOrigin="0.552,1.4" Background="#FFE43F33" BorderBrush="#FF909090" Foreground="#DDFFFFFF" Content="Odustani" Margin="40,0,0,0" Click="CancelButton_Click" />
+                        <Button x:Name="payButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="26" RenderTransformOrigin="0.552,1.4" Background="#FF337BE4" BorderBrush="#FF909090" Foreground="#DDFFFFFF" Content="Plati račun" Margin="40,0,0,0" Click="payButton_Click" />
+
+                    </StackPanel>
+
+
+                </StackPanel>
+            </StackPanel>
+            <materialDesign:DialogHost Grid.Row="0" Grid.RowSpan="2" CloseOnClickAway="True" x:Name="billPopup" Background="#FF590F0F" IsOpen="False" ScrollViewer.CanContentScroll="True"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                <materialDesign:DialogHost.DialogContent>
+                    <StackPanel Background="White" Width="550" Height="Auto" Margin="0,0,0,50">
+                        <Label x:Name="lbDialog" Content="Glavni račun" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26" Margin="0,20,0,0"></Label>
+
+                        <Grid>
+                            <TextBlock x:Name="tbReceiptNumberLabel2"  Foreground="#FF4BB050" Text="Broj računa"  VerticalAlignment="Top"  Margin="50,30,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbClientLabel2"  Foreground="#FF4BB050" Text="Klijent"  VerticalAlignment="Top"  Margin="50,80,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbEventNameLabel2"  Foreground="#FF4BB050" Text="Naziv događaja"  VerticalAlignment="Top"  Margin="50,130,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbTotalAmountLabel2"  Foreground="#FF4BB050" Text="Iznos (bez popusta)"  VerticalAlignment="Top"  Margin="50,180,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+
+                            <TextBlock x:Name="tbReceiptNumber2" VerticalAlignment="Top"  Margin="230,30,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbClientName2"  Text="{Binding Path=client}"  DataContext="{StaticResource reservation}" VerticalAlignment="Top"  Margin="230,80,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbEventName2"  Text="{Binding Path=_event.name}" DataContext="{StaticResource reservation}" VerticalAlignment="Top"  Margin="230,130,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbPrice2"  VerticalAlignment="Top"  Margin="230,180,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                        </Grid>
+                        <Separator Margin="50,20,50,0" Width="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                        <Label x:Name="lbDialog2" Content="Uplata rate" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26" Margin="0,10,0,0"></Label>
+
+                        <Grid>
+                            <TextBlock x:Name="tbReceiptNumberLabel3"  Foreground="#FF4BB050" Text="Broj računa"  VerticalAlignment="Top"  Margin="50,30,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbInstallmentNumberLabel"  Foreground="#FF4BB050" Text="Broj rate"  VerticalAlignment="Top"  Margin="50,80,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbPaymentAmountLabel"  Foreground="#FF4BB050" Text="Iznos (bez popusta)"  VerticalAlignment="Top"  Margin="50,130,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbDiscountLabel"  Foreground="#FF4BB050" Text="Popust"  VerticalAlignment="Top"  Margin="50,180,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbPaymnetAmountLabel"  Foreground="#FF4BB050" Text="Ukupan iznos"  VerticalAlignment="Top"  Margin="50,230,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+
+                            <TextBlock x:Name="tbReceiptNumber3" DataContext="{StaticResource reciept}" Text="{Binding serial_number}" VerticalAlignment="Top"  Margin="230,30,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbInstallmentNumber" VerticalAlignment="Top"  Margin="230,80,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbPaymentNoDiscount"  VerticalAlignment="Top" Margin="230,130,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbDiscount" VerticalAlignment="Top"  Margin="230,180,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbPaymnetAmount" VerticalAlignment="Top"  Margin="230,230,0,0" FontSize="16" HorizontalAlignment="Left"/>
+
+                            <TextBlock x:Name="tbDateLabel3"  Foreground="#FF4BB050" Text="Datum izdavanja"  VerticalAlignment="Top"  Margin="50,280,50,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                            <DatePicker x:Name="dpReceiptDate" Width="200" Margin="230,280,0,0" SelectedDate="{x:Static sys:DateTime.Today}"></DatePicker>
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,50,0,0">
+                            <Button x:Name="btnAcceptInstallment"  IsDefault="True"
+                            Margin="0,0,20,0" Foreground="White" Width="120" Click="btnAcceptInstallment_Click">
+                                Potvrdi
+                            </Button>
+                            <Button x:Name="btnCancel2"  IsCancel="True"
+                            Margin="20,0,0,0"
+                            Command="materialDesign:DialogHost.CloseDialogCommand" Background="Red" BorderBrush="Red" Foreground="White" Width="120">
+                                Odustani
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </materialDesign:DialogHost.DialogContent>
+            </materialDesign:DialogHost>
+
+            <materialDesign:DialogHost Grid.Row="0" Grid.RowSpan="2" x:Name="billPopup2" IsOpen="False" CloseOnClickAway="True" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <materialDesign:DialogHost.DialogContent>
+                    <StackPanel Background="White" Width="550" Height="Auto" Margin="0,0,0,50">
+                        <Label x:Name="lbDialog3" Content="Uplata računa" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="26" Margin="0,30,0,0"></Label>
+
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0">
+                            <TextBlock x:Name="tbReceiptNumberLabel4"  Foreground="#FF4BB050" Text="Broj računa"  VerticalAlignment="Top"  Margin="50,50,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbClientLabel4"  Foreground="#FF4BB050" Text="Klijent"  VerticalAlignment="Top"  Margin="50,100,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbEventNameLabel4"  Foreground="#FF4BB050" Text="Naziv događaja"  VerticalAlignment="Top"  Margin="50,150,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbTotalAmountLabel4"  Foreground="#FF4BB050" Text="Ukupan iznos"  VerticalAlignment="Top"  Margin="50,200,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+
+                            <TextBlock x:Name="tbReceiptNumber4" VerticalAlignment="Top"  Margin="230,50,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbClientName4"  Text="{Binding Path=client.first_name}"  DataContext="{StaticResource reservation}" VerticalAlignment="Top"  Margin="230,100,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbEventName4"  Text="{Binding Path=_event.name}" DataContext="{StaticResource reservation}" VerticalAlignment="Top"  Margin="230,150,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbPrice4"  Text="nekako popuniti"  VerticalAlignment="Top"  Margin="230,200,0,0" FontSize="16" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="tbInstallmentStatusLabel2"  Foreground="#FF4BB050" Text="Status"  VerticalAlignment="Top"  Margin="50,250,0,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+
+                            <ComboBox x:Name="cbStatus2" Margin="230,250,0,0" Width="164" VerticalAlignment="Top" HorizontalAlignment="Left">
+                                <ComboBoxItem IsSelected="True">Uplaćeno</ComboBoxItem>
+                                <ComboBoxItem>Nije uplaćeno</ComboBoxItem>
+                            </ComboBox>
+
+                            <TextBlock x:Name="tbDateLabel5"  Foreground="#FF4BB050" Text="Datum uplate"  VerticalAlignment="Top"  Margin="50,300,50,0" FontSize="16" FontWeight="Medium" HorizontalAlignment="Left"/>
+                            <DatePicker x:Name="calendar" Margin="230,300,0,0" SelectedDate="{x:Static sys:DateTime.Today}"></DatePicker>
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,60,0,0">
+                            <Button x:Name="btnAcceptReceipt"  IsDefault="True" Click="btnAcceptReceipt_Click"
+                            Margin="0,0,20,0" Foreground="White" Width="120" >
+                                Potvrdi
+                            </Button>
+                            <Button x:Name="btnCancel3"  IsCancel="True"
+                            Margin="20,0,0,0"
+                            Command="materialDesign:DialogHost.CloseDialogCommand" Background="Red" BorderBrush="Red" Foreground="White" Width="120">
+                                Odustani
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </materialDesign:DialogHost.DialogContent>
+            </materialDesign:DialogHost>
+            <materialDesign:DialogHost Grid.Row="0" Grid.RowSpan="2" x:Name="errorPopup" CloseOnClickAway="True" Background="#FF590F0F" IsOpen="False"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                <materialDesign:DialogHost.DialogContent>
+                    <StackPanel Background="White" Width="300" Height="Auto" Margin="10,50,10,50">
+                        <TextBlock Text="Nije dozvoljena radnja. Morate kreirati račun!" TextWrapping="Wrap" FontSize="16" VerticalAlignment="Top" TextAlignment="Center" HorizontalAlignment="Center" Margin="0 0 0 30"></TextBlock>
+                        <Button x:Name="btnOk" Command="materialDesign:DialogHost.CloseDialogCommand" VerticalAlignment="Top" HorizontalAlignment="Center" IsDefault="True" Foreground="White" Width="120" >OK</Button>
+                    </StackPanel>
+                </materialDesign:DialogHost.DialogContent>
+            </materialDesign:DialogHost>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

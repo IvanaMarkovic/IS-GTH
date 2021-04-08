@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="GlobalThinkersHelper.View.ViewTerm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GlobalThinkersHelper.View"
+             xmlns:validation="clr-namespace:GlobalThinkersHelper.Validation"
+             xmlns:view="clr-namespace:GlobalThinkersHelper.View"
+             xmlns:entity="clr-namespace:GlobalThinkersHelper.Model.Entities"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="400">
+    <UserControl.Resources>
+        <entity:term x:Key="term"></entity:term>
+    </UserControl.Resources>
+    <Grid x:Name="gridCardContent" DataContext="{StaticResource term}" Margin="0,20,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"></ColumnDefinition>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Događaj:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0" Foreground="Gray" FontWeight="Medium"></TextBlock>
+        <TextBlock Grid.Column="1" Text="{Binding reservation._event.name}" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="#4bb050" FontWeight="Medium"></TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Sala:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0" Foreground="Gray" FontWeight="Medium"></TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding hall.name}" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="#4bb050" FontWeight="Medium"></TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Klijent:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0" Foreground="Gray" FontWeight="Medium" ></TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding reservation.client}" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="#4bb050" FontWeight="Medium"></TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Vrijeme početka:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0"  Foreground="Gray" FontWeight="Medium"></TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding rent_time_start}" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="#4bb050" FontWeight="Medium"></TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Vrijeme kraja:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0"  Foreground="Gray" FontWeight="Medium"></TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="4" Text="{Binding rent_time_end}" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="#4bb050" FontWeight="Medium"></TextBlock>
+    </Grid>
+</UserControl>
